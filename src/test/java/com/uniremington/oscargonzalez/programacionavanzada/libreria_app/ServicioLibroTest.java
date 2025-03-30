@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -45,14 +46,38 @@ public class ServicioLibroTest {
     @Test
     void crearOactualizarlibroTest() {
 
+        //Dado
         Libro libro = new Libro("Título 3", "Autor 3", 20.0);
         when(repositorioLibro.save(libro)).thenReturn(libro);
 
+        //Cuando
         Libro libroGuardado = servicioLibro.crearOactualizarLibro(libro);
 
+        //Entonces
         assertNotNull(libroGuardado);
         assertEquals("Título 3", libroGuardado.getTitulo());
+
         // Verificamos que se llamó al repositorio (mock)
         verify(repositorioLibro, times(1)).save(libro);
     }
+
+    @Test
+    void obtenerLibrosPorIdTest(){
+
+        Libro libro = new Libro("Título 4", "Autor 4", 100.99);
+        libro.setId(1);
+        when(repositorioLibro.findById(1)).thenReturn(Optional.of(libro));
+
+        Optional <Libro> libroOptional = servicioLibro.obtenerLibrosPorId(1);
+
+
+        Libro libroObtenido = libroOptional.orElse(null);
+
+        assertNotNull(libroObtenido);
+        assertEquals("Título 4", libroObtenido.getTitulo());
+
+        verify(repositorioLibro, times(1)).findById(1);
+    }
+
 }
+
