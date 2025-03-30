@@ -1,0 +1,22 @@
+name: Pruebas Automatizadas
+
+on:
+  push:
+    branches:
+      - parcial-1b
+  pull_request:
+    branches:
+      - parcial-1b
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Ejecutar pruebas
+        run: mvn test
