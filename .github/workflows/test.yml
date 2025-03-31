@@ -18,5 +18,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+      - name: Dar permisos al wrapper
+        run: chmod +x mvnw
       - name: Ejecutar pruebas
         run: ./mvnw test
