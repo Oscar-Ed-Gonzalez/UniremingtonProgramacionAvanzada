@@ -69,8 +69,6 @@ public class ServicioLibroTest {
         when(repositorioLibro.findById(1)).thenReturn(Optional.of(libro));
 
         Optional <Libro> libroOptional = servicioLibro.obtenerLibrosPorId(1);
-
-
         Libro libroObtenido = libroOptional.orElse(null);
 
         assertNotNull(libroObtenido);

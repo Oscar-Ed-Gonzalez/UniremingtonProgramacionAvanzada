@@ -51,4 +51,22 @@ public class ControladorLibroTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
     }
+
+    @Test
+    void eliminarLibroTest() throws Exception {
+
+        repositorioLibro.deleteAll();
+        Libro libro1 = repositorioLibro.save(new Libro("Libro 1", "Autor 1", 10.0));
+        Libro libro2 = repositorioLibro.save(new Libro("Libro 2", "Autor 2", 20.0));
+
+
+        mockMvc.perform(delete("/api/libros/{id}", libro1.getId()))
+                .andExpect(status().isOk());
+
+
+        mockMvc.perform(get("/api/libros"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
 }
