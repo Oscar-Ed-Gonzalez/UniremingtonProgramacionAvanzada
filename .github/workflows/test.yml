@@ -19,4 +19,4 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: Ejecutar pruebas
-        run: mvn test
+        run: ./mvnw test

@@ -11,7 +11,7 @@ Persistencia: Utiliza una base de datos en memoria (H2) para desarrollo y prueba
 
 Pruebas Unitarias: Se validan los servicios y la lógica de negocio utilizando JUnit y Mockito.
 
-Pruebas de Integración: Se testean los endpoints REST con MockMvc.
+Pruebas de Integración: Se testean los endpoints REST con WebTestClient.
 
 CI/CD: Pipeline configurado en GitHub Actions para ejecutar las pruebas automáticamente en cada push o pull request a la rama parcial-1b.
 
