@@ -4,8 +4,14 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtFilter implements Filter {
@@ -25,6 +31,14 @@ public class JwtFilter implements Filter {
             if (!jwtUtil.validarToken(token)) {
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
                 return;
+            } else {
+                // Establece la autenticación en el SecurityContext
+                String username = jwtUtil.obtenerUsername(token);
+                String rol = jwtUtil.obtenerRol(token);
+                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + rol));
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(username, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } else if (!req.getRequestURI().contains("/login") && !req.getMethod().equalsIgnoreCase("OPTIONS")) {
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Falta token");

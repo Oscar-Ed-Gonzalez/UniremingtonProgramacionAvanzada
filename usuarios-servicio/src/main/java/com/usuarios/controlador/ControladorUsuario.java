@@ -26,8 +26,8 @@ public class ControladorUsuario {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
         String correo = body.get("correo");
-        String contraseña = body.get("contraseña");
-        Optional<Usuario> usuario = servicioUsuario.login(correo, contraseña);
+        String contrasena = body.get("contrasena");
+        Optional<Usuario> usuario = servicioUsuario.login(correo, contrasena);
 
         if (usuario.isPresent()) {
             String token = jwtUtil.generarToken(usuario.get().getCorreo(), usuario.get().getRol());

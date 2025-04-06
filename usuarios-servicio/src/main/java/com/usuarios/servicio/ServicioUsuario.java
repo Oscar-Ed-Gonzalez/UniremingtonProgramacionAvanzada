@@ -30,8 +30,8 @@ public class ServicioUsuario {
         repositorioUsuario.deleteById(id);
     }
 
-    public Optional<Usuario> login(String correo, String contraseña) {
+    public Optional<Usuario> login(String correo, String contrasena) {
         return repositorioUsuario.findByCorreo(correo)
-                .filter(u -> u.getContraseña().equals(contraseña));
+                .filter(u -> u.getContrasena().equals(contrasena));
     }
 }
