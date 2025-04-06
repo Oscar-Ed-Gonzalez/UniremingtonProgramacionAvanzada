@@ -1,5 +1,7 @@
-package com.libros;
+package com.libros.controlador;
 
+import com.libros.modelo.Libro;
+import com.libros.servicio.ServicioLibro;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

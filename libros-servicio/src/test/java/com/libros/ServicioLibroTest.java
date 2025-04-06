@@ -1,5 +1,8 @@
 package com.libros;
 
+import com.libros.modelo.Libro;
+import com.libros.repositorio.RepositorioLibro;
+import com.libros.servicio.ServicioLibro;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
