@@ -9,16 +9,12 @@
         <groupId>com.libreria-app</groupId>
         <artifactId>libreria-app</artifactId>
         <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>com.usuarios</groupId>
     <artifactId>usuarios-servicio</artifactId>
-
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!-- Spring Web para controladores REST -->
@@ -85,7 +81,6 @@
 
     <build>
         <plugins>
-            <!-- Plugin para empaquetar como aplicación Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

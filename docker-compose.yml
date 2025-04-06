@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - microservices-net
+
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-net
+    depends_on:
+      - config-server
+
+  libros-servicio:
+    build: ./libros-servicio
+    container_name: libros-servicio
+    ports:
+      - "8081:8081"
+    networks:
+      - microservices-net
+    depends_on:
+      - config-server
+      - eureka-server
+
+  usuarios-servicio:
+    build: ./usuarios-servicio
+    container_name: usuarios-servicio
+    ports:
+      - "8082:8082"
+    networks:
+      - microservices-net
+    depends_on:
+      - config-server
+      - eureka-server
+
+  pedidos-servicio:
+    build: ./pedidos-servicio
+    container_name: pedidos-servicio
+    ports:
+      - "8083:8083"
+    networks:
+      - microservices-net
+    depends_on:
+      - config-server
+      - eureka-server
+      - libros-servicio
+      - usuarios-servicio
+
+networks:
+  microservices-net:
+    driver: bridge
