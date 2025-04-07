@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
   config-server:
-    build: ./config-server
+    build:
+      context: .
+      dockerfile: config-server/Dockerfile
     container_name: config-server
     ports:
       - "8888:8888"
@@ -10,7 +12,9 @@ services:
       - microservices-net
 
   eureka-server:
-    build: ./eureka-server
+    build:
+      context: .
+      dockerfile: eureka-server/Dockerfile
     container_name: eureka-server
     ports:
       - "8761:8761"
@@ -20,7 +24,9 @@ services:
       - config-server
 
   libros-servicio:
-    build: ./libros-servicio
+    build:
+      context: .
+      dockerfile: libros-servicio/Dockerfile
     container_name: libros-servicio
     ports:
       - "8081:8081"
@@ -31,7 +37,9 @@ services:
       - eureka-server
 
   usuarios-servicio:
-    build: ./usuarios-servicio
+    build:
+      context: .
+      dockerfile: usuarios-servicio/Dockerfile
     container_name: usuarios-servicio
     ports:
       - "8082:8082"
@@ -42,7 +50,9 @@ services:
       - eureka-server
 
   pedidos-servicio:
-    build: ./pedidos-servicio
+    build:
+      context: .
+      dockerfile: pedidos-servicio/Dockerfile
     container_name: pedidos-servicio
     ports:
       - "8083:8083"

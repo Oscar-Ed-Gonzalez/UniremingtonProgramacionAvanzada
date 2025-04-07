@@ -1,18 +1,17 @@
-# Etapa 1: Construcción de la aplicación con Maven 3.9.9 y OpenJDK 21
-FROM maven:3.9.9-openjdk-21 AS builder
+# Etapa 1: Construcción
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
 WORKDIR /app
-# Copia el pom.xml para descargar las dependencias
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
-# Copia el código fuente y compila la aplicación
-COPY src ./src
+
+# Copiamos TODO el proyecto desde el contexto raíz (libreria-app)
+COPY . .
+
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Imagen de producción con Eclipse Temurin y OpenJDK 21
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 # Copia el jar compilado desde la etapa de construcción
-COPY --from=builder /app/target/usuarios-servicio-1.0.0.jar app.jar
+COPY --from=builder /app/usuarios-servicio/target/usuarios-servicio-1.0.0.jar app.jar
 # Expone el puerto configurado en application.properties (por ejemplo, 8082)
 EXPOSE 8082
 # Comando de entrada para ejecutar la aplicación
