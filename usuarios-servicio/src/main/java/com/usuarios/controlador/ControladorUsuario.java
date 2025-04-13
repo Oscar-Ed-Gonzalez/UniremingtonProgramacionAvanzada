@@ -41,6 +41,11 @@ public class ControladorUsuario {
         return servicioUsuario.obtenerTodos();
     }
 
+    @GetMapping("/{id}")
+    public Optional<Usuario> obtenerUsuarioPorId(@PathVariable int id){
+        return servicioUsuario.obtenerPorId(id);
+    }
+
     @PostMapping
     public Usuario crearUsuario(@RequestBody Usuario u) {
         return servicioUsuario.guardarUsuario(u);

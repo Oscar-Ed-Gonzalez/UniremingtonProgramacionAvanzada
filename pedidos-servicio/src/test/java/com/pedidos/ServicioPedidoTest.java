@@ -2,6 +2,8 @@ package com.pedidos;
 
 import com.pedidos.cliente.ClienteLibro;
 import com.pedidos.cliente.ClienteUsuario;
+import com.pedidos.dto.LibroDTO;
+import com.pedidos.dto.UsuarioDTO;
 import com.pedidos.modelo.Pedido;
 import com.pedidos.repositorio.RepositorioPedido;
 import com.pedidos.servicio.ServicioPedido;
@@ -40,10 +42,22 @@ public class ServicioPedidoTest {
         Integer idUsuario = 1;
         Integer idLibro = 10;
 
-        // Dado
-        when(clienteUsuario.obtenerUsuario(idUsuario)).thenReturn(new Object());
-        when(clienteLibro.obtenerLibro(idLibro)).thenReturn(new Object());
+        // Dado: crear DTOs con los valores esperados
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setId(idUsuario);
+        usuarioDTO.setNombre("Usuario de Prueba");
+        // Asigna otros atributos si es necesario
 
+        LibroDTO libroDTO = new LibroDTO();
+        libroDTO.setId(idLibro);
+        libroDTO.setTitulo("Libro de Prueba");
+        // Asigna otros atributos si es necesario
+
+        // Configurar los mocks para que retornen los DTOs con datos correctos
+        when(clienteUsuario.obtenerUsuario(idUsuario)).thenReturn(usuarioDTO);
+        when(clienteLibro.obtenerLibro(idLibro)).thenReturn(libroDTO);
+
+        // Configurar el repositorio para que retorne el pedido tal como se guarda
         when(repositorioPedido.save(any(Pedido.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 

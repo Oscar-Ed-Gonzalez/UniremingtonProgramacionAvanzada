@@ -1,9 +1,6 @@
 package com.usuarios.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Usuario {
@@ -13,7 +10,10 @@ public class Usuario {
         private Integer id;
 
         private String nombre;
+
+        @Column(unique = true)
         private String correo;
+
         private String contrasena;
         private String rol;
 
