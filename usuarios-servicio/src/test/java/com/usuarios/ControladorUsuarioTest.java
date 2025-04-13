@@ -2,20 +2,24 @@ package com.usuarios;
 
 import com.usuarios.modelo.Usuario;
 import com.usuarios.repositorio.RepositorioUsuario;
+import com.usuarios.seguridad.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import com.usuarios.seguridad.JwtUtil;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWebTestClient
+@AutoConfigureMockMvc
 public class ControladorUsuarioTest {
 
     @Autowired
-    private WebTestClient webTestClient;
+    private MockMvc mockMvc;
 
     @Autowired
     private RepositorioUsuario repositorioUsuario;
@@ -24,7 +28,7 @@ public class ControladorUsuarioTest {
     private JwtUtil jwtUtil;
 
     @Test
-    public void ObtenerTodosTest(){
+    public void obtenerTodosTest() throws Exception {
 
         // Limpia la base de datos para garantizar un entorno controlado
         repositorioUsuario.deleteAll();
@@ -49,16 +53,10 @@ public class ControladorUsuarioTest {
         String token = jwtUtil.generarToken("juan@example.com", "USER");
 
         // Realizar la llamada GET al endpoint "/api/usuarios" con el header de autorización
-        webTestClient.get()
-                .uri("/api/usuarios")
-                .header("Authorization", "Bearer " + token)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBodyList(Usuario.class)
-                .hasSize(2)
-                .consumeWith(response -> {
-                    assertThat(response.getResponseBody()).isNotNull();
-                });
+        mockMvc.perform(get("/api/usuarios")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
 }

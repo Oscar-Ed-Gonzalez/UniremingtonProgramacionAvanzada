@@ -1,12 +1,12 @@
 package com.usuarios.controlador;
 
 import com.usuarios.modelo.Usuario;
+import com.usuarios.seguridad.JwtUtil;
 import com.usuarios.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.usuarios.seguridad.*;
 
 import java.util.Collections;
 import java.util.List;

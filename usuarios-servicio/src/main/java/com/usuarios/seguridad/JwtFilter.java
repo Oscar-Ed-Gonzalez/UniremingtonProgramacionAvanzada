@@ -20,10 +20,24 @@ public class JwtFilter implements Filter {
     private JwtUtil jwtUtil;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
+        String uri = req.getRequestURI();
+        String method = req.getMethod();
+
+        // Si la petición es de creación de usuario (POST a /api/usuarios),
+        // o es el endpoint de login o endpoints de actuator, saltamos la validación de token.
+        if (uri.equals("/api/usuarios") && method.equalsIgnoreCase("POST")
+                || uri.equals("/api/usuarios/login")
+                || uri.startsWith("/actuator")
+                || uri.startsWith("/eureka")
+                || uri.startsWith("/h2-console")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // Validación del token para las demás solicitudes
         String authHeader = req.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -40,11 +54,13 @@ public class JwtFilter implements Filter {
                         new UsernamePasswordAuthenticationToken(username, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } else if (!req.getRequestURI().contains("/login") && !req.getMethod().equalsIgnoreCase("OPTIONS")) {
+        } else if (!req.getMethod().equalsIgnoreCase("OPTIONS")) {
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Falta token");
             return;
         }
 
         chain.doFilter(request, response);
+
     }
+
 }
