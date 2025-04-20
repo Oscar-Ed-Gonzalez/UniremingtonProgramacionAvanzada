@@ -10,6 +10,12 @@ services:
       - "8888:8888"
     networks:
       - microservices-net
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8888/actuator/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   eureka-server:
     build:
@@ -21,7 +27,14 @@ services:
     networks:
       - microservices-net
     depends_on:
-      - config-server
+      config-server:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8761/actuator/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   libros-servicio:
     build:
@@ -33,8 +46,10 @@ services:
     networks:
       - microservices-net
     depends_on:
-      - config-server
-      - eureka-server
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
     environment:
       - CONFIG_SERVER_URI=http://config-server:8888
       - EUREKA_URI=http://eureka-server:8761/eureka
@@ -49,8 +64,10 @@ services:
     networks:
       - microservices-net
     depends_on:
-      - config-server
-      - eureka-server
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
     environment:
       - CONFIG_SERVER_URI=http://config-server:8888
       - EUREKA_URI=http://eureka-server:8761/eureka
