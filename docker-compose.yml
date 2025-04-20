@@ -72,6 +72,7 @@ services:
     environment:
       - CONFIG_SERVER_URI=http://config-server:8888
       - EUREKA_URI=http://eureka-server:8761/eureka
+      - USUARIOS_SERVICIO_URL_DOCKER=http://usuarios-servicio:8082/api/usuarios/login
 
 networks:
   microservices-net:
