@@ -72,3 +72,28 @@ Las pruebas automáticas se ejecutan en el pipeline de GitHub Actions.
 Puedes consultarlas en la sección Actions del repositorio público:
 https://github.com/Oscar-Ed-Gonzalez/UniremingtonProgramacionAvanzada
 
+## Aclaraciones sobre el consumo de los endpoints
+
+Debido al requerimiento de seguridad y al uso de una base de datos en memoria, para consumir los servicios de usuarios y garantizar la integración correcta con el servicio de pedidos, es necesario crear el siguiente usuario.
+
+1. **Crear usuario**  
+   Petición POST a `/api/usuarios` con el siguiente cuerpo JSON:
+   ```json
+   {
+    "nombre": "usuario1",
+    "correo": "u1@gmail.com",
+    "contrasena": "123456",
+    "rol": "ROLE_USER"
+   }
+2. **Obtener el token JWT**  
+   Petición POST a `/api/usuarios/login` con el siguiente cuerpo JSON:
+   ```json
+   {
+     "correo": "u1@gmail.com",
+     "contrasena": "123456"
+   }
+   
+La respuesta incluirá un campo token que se debe enviar en el header Authorization: 
+Bearer <token> para consumir los demás endpoints de usuarios 
+
+
