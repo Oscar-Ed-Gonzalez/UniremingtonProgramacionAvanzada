@@ -3,22 +3,30 @@ name: Pruebas Automatizadas
 on:
   push:
     branches:
-      - parcial-1b
+      - sistema-libreria-devops
   pull_request:
     branches:
-      - parcial-1b
+      - sistema-libreria-devops
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
+      # Clona el repo
       - uses: actions/checkout@v3
+
+      # Instala JDK 21
       - name: Configurar JDK 21
         uses: actions/setup-java@v3
         with:
+          distribution: temurin
           java-version: '21'
-          distribution: 'temurin'
-      - name: Dar permisos al wrapper
+
+      # Da permisos al wrapper
+      - name: Dar permisos al Maven Wrapper
         run: chmod +x mvnw
-      - name: Ejecutar pruebas
-        run: ./mvnw test
+
+      # Ejecuta tests en todos los módulos
+      - name: Ejecutar pruebas multi‑módulo
+        run: ./mvnw clean test -B
