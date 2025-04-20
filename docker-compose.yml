@@ -51,6 +51,9 @@ services:
     depends_on:
       - config-server
       - eureka-server
+    environment:
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - EUREKA_URI=http://eureka-server:8761/eureka
 
   pedidos-servicio:
     build:
@@ -66,6 +69,9 @@ services:
       - eureka-server
       - libros-servicio
       - usuarios-servicio
+    environment:
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - EUREKA_URI=http://eureka-server:8761/eureka
 
 networks:
   microservices-net:
