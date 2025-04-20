@@ -43,9 +43,6 @@ public class ServicioPedido {
         pedido.setIdUsuario(usuario.getId());
         pedido.setIdLibro(libro.getId());
         pedido.setFecha(LocalDateTime.now());
-        // Opcional: almacenar más datos para referencia (por ejemplo, nombre del usuario o título del libro)
-        // pedido.setNombreUsuario(usuario.getNombre());
-        // pedido.setTituloLibro(libro.getTitulo());
 
         return repositorioPedido.save(pedido);
     }

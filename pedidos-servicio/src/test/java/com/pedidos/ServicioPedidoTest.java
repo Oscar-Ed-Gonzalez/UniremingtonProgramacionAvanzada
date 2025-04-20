@@ -13,6 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -75,4 +78,35 @@ public class ServicioPedidoTest {
         verify(clienteLibro, times(1)).obtenerLibro(idLibro);
         verify(repositorioPedido, times(1)).save(any(Pedido.class));
     }
+
+    @Test
+    void listarTest() {
+        // Datos de prueba
+        Pedido p1 = new Pedido();
+        p1.setIdUsuario(1);
+        p1.setIdLibro(10);
+        p1.setFecha(LocalDateTime.now());
+
+        Pedido p2 = new Pedido();
+        p2.setIdUsuario(2);
+        p2.setIdLibro(20);
+        p2.setFecha(LocalDateTime.now());
+
+        // Dado
+        List<Pedido> listaEsperada = List.of(p1, p2);
+
+
+        when(repositorioPedido.findAll()).thenReturn(listaEsperada);
+
+        // Cuando
+        List<Pedido> resultado = servicioPedido.obtenerTodos();
+
+        // Entonces
+        assertNotNull(resultado, "La lista de pedidos no debe ser nula");
+        assertEquals(listaEsperada.size(), resultado.size(), "Debe retornar la cantidad correcta de pedidos");
+        assertEquals(listaEsperada, resultado, "La lista devuelta debe coincidir con la esperada");
+
+        verify(repositorioPedido, times(1)).findAll();
+    }
+
 }
